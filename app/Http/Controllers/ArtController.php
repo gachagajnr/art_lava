@@ -14,20 +14,15 @@ class ArtController extends Controller
 	{
 	    return $art;
 	}
-	// public function store(Request $request)
-	// {
-	//     $art = Art::create($request->all());
-	//     return response()->json($art, 201);
-	// }
+	  
 	public function update(Request $request, Art $art)
 	{
 	    $art->update($request->all());
 	    return response()->json($art, 200);
 	}
-	public function delete(Art $art)
+	public function delete($id)
 	{
-	    $art->delete();
-	    return response()->json(null, 204);
+		return Art::destroy($id);
 	}
     public function store(Request $request)
     {
@@ -38,8 +33,14 @@ class ArtController extends Controller
         'category' => 'required',
         'availability' => 'boolean',
     ]);
-	    $product = Art::create($request->all());
-	    return response()->json($product, 201);
+	    $art = Art::create($request->all());
+	    return response()->json($art, 201);
+	}
+
+
+	public function search($name){
+		
+		return Art::where('name', 'like', '%' . $name . '%')->get();
 	}
 
 }

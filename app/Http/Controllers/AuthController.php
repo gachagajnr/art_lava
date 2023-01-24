@@ -33,7 +33,7 @@ class AuthController extends Controller
         }
  
         public function login(Request $request){
-        if (!auth::attempt($request->only('email', 'password'))) {
+        if (!Auth::attempt($request->only('email', 'password'))) {
                return response()->json([
                 'message' => 'Login information is invalid.'
               ], 401);
@@ -47,4 +47,17 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
             ]);
         }
+
+    public function logout(Request $request)
+    {
+        
+         Auth::logout();
+ 
+    $request->session()->invalidate();
+ 
+    $request->session()->regenerateToken();
+ 
+    return redirect('/');
+        // return response()->json('logout method');
+    }
 }
